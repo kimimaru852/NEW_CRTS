@@ -3,75 +3,85 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\AdminApprovalService;
-use App\Services\AdminInventoriesService;
-use App\Services\AdminRecievingService;
-use App\Services\CheckUpdateInventoryService;
-use App\Services\CreateInventoryService;
+use App\Services\API\Admin\Inventory\AdminVerifyService;
+use App\Services\API\Admin\Inventory\AdminDisplayService;
+use App\Services\API\Admin\Inventory\AdminRecieveService;
+use App\Services\API\Admin\Inventory\AdminUpdateInventoryService;
+use App\Services\API\User\Inventory\UserCreateInventoryService;
 use App\Services\DeleteInventoryService;
-use App\Services\DisposeService;
-use App\Services\ManagerApprovalService;
-use App\Services\ManagerInventoriesService;
-use App\Services\TempToDelInventoriesService;
-use App\Services\UserInventoriesService;
-use App\Services\ManagerTempToDelInventoriesService;
-use App\Services\UserUpdateInventories;
-use App\Services\ReturnInventoriesServices;
+use App\Services\API\Admin\Inventory\AdminDisposeService;
+use App\Services\API\Manager\Inventory\ManagerApproveService;
+use App\Services\API\Manager\Inventory\ManagerDisplayService;
+use App\Services\API\Admin\Inventory\AdminProcessedService;
+use App\Services\API\User\Inventory\UserDisplayInventoriesService;
+use App\Services\API\User\Inventory\UserCountInventoryService;
+use App\Services\API\User\Inventory\UserUpdateInventoryService;
+use App\Services\API\Admin\Inventory\AdminReturnService;
+use App\Services\API\Admin\GrdsList\DisplayGRDSList;
+use App\Services\API\User\Form\ShowSelection;
 
 class InventoryController extends Controller
 {
 
-    protected $tempToDelInventoriesService;
-    protected $adminInventoriesService;
-    protected $managerInventoriesService;
-    protected $userInventoriesService;
-    protected $createInventoryService;
-    protected $checkUpdateInventoryService;
+    protected $adminProcessedService;
+    protected $adminDisplayService;
+    protected $managerDisplayService;
+    protected $userDisplayInventoriesService;
+    protected $userCountInventoryService;
+    protected $userCreateInventoryService;
+    protected $adminUpdateInventoryService;
     protected $deleteInventoryService;
-    protected $adminRecievingService;
-    protected $managerApprovalService;
-    protected $adminApprovalService;
-    protected $disposeService;
-    protected $managerTempToDelInventories;
-    protected $userUpdateInventories;
-    protected $returnInventoriesService;
+    protected $adminRecieveService;
+    protected $managerApproveService;
+    protected $adminVerifyService;
+    protected $adminDisposeService;
+    protected $userUpdateInventoryService;
+    protected $adminReturnService;
+    protected $displayGrdsListService;
+    protected $showSelectionService;
 
     public function __construct(
-        TempToDelInventoriesService $tempToDelInventoriesService,
-        AdminInventoriesService $adminInventoriesService,
-        ManagerInventoriesService $managerInventoriesService,
-        UserInventoriesService $userInventoriesService,
-        CreateInventoryService $createInventoryService,
-        CheckUpdateInventoryService $checkUpdateInventoryService,
+        AdminProcessedService $adminProcessedService,
+        AdminDisplayService $adminDisplayService,
+        ManagerDisplayService $managerDisplayService,
+        UserDisplayInventoriesService $userDisplayInventoriesService,
+        UserCountInventoryService $userCountInventoryService,
+        UserCreateInventoryService $userCreateInventoryService,
+        AdminUpdateInventoryService $adminUpdateInventoryService,
         DeleteInventoryService $deleteInventoryService,
-        AdminRecievingService $adminRecievingService,
-        ManagerApprovalService $managerApprovalService,
-        AdminApprovalService $adminApprovalService,
-        DisposeService $disposeService,
-        ManagerTempToDelInventoriesService $managerTempToDelInventories,
-        UserUpdateInventories $userUpdateInventories,
-        ReturnInventoriesServices $returnInventoriesServices,
+        AdminRecieveService $adminRecieveService,
+        ManagerApproveService $managerApproveService,
+        AdminVerifyService $adminVerifyService,
+        AdminDisposeService $adminDisposeService,
+        UserUpdateInventoryService $userUpdateInventoryService,
+        AdminReturnService $adminReturnService,
+        DisplayGRDSList $displayGrdsListService,
+        ShowSelection $showSelectionService,
     ) {
-        $this->tempToDelInventoriesService = $tempToDelInventoriesService;
-        $this->adminInventoriesService = $adminInventoriesService;
-        $this->managerInventoriesService = $managerInventoriesService;
-        $this->userInventoriesService = $userInventoriesService;
-        $this->createInventoryService = $createInventoryService;
+        $this->adminProcessedService = $adminProcessedService;
+        $this->adminDisplayService = $adminDisplayService;
+        $this->managerDisplayService = $managerDisplayService;
+        $this->userDisplayInventoriesService = $userDisplayInventoriesService;
+        $this->userCountInventoryService = $userCountInventoryService;
+        $this->userCreateInventoryService = $userCreateInventoryService;
         $this->deleteInventoryService = $deleteInventoryService;
-        $this->managerApprovalService = $managerApprovalService;
-        $this->adminRecievingService = $adminRecievingService;
-        $this->adminApprovalService = $adminApprovalService;
-        $this->checkUpdateInventoryService = $checkUpdateInventoryService;
-        $this->disposeService = $disposeService;
-        $this->managerTempToDelInventories = $managerTempToDelInventories;
-        $this->userUpdateInventories = $userUpdateInventories;
-        $this->returnInventoriesService = $returnInventoriesServices;
+        $this->managerApproveService = $managerApproveService;
+        $this->adminRecieveService = $adminRecieveService;
+        $this->adminVerifyService = $adminVerifyService;
+        $this->adminUpdateInventoryService = $adminUpdateInventoryService;
+        $this->adminDisposeService = $adminDisposeService;
+        $this->userUpdateInventoryService = $userUpdateInventoryService;
+        $this->adminReturnService = $adminReturnService;
+        $this->displayGrdsListService = $displayGrdsListService;
+        $this->showSelectionService = $showSelectionService;
     }
 
-    public function view()
+    public function displaySelection()
     {
-        return view('user.form');
+        $lists = $this->showSelectionService->showSelection();
+        return view('user.form', compact('lists'));
     }
+
     public function displayRegister()
     {
         return view('manager.register');
@@ -79,17 +89,18 @@ class InventoryController extends Controller
 
     public function create(Request $request)
     {
-        return $this->createInventoryService->createInventory($request);
+        return $this->userCreateInventoryService->createInventory($request);
     }
 
-    public function update(Request $request, int $id, CheckUpdateInventoryService $checkUpdateInventoryService)
+    public function update(Request $request, int $id, AdminUpdateInventoryService $adminUpdateInventoryService)
     {
         $validated = $request->validate([
             'rack_no' => 'required|integer|min:1',
             'loc_code' => 'required|string|max:50',
+            'nap_authority_no' => 'required|string|max:50',
         ]);
 
-        $checkUpdateInventoryService->checkUpdate($id, $validated);
+        $adminUpdateInventoryService->checkUpdate($id, $validated);
 
         return response()
             ->json(['message' => 'Inventory updated successfully.']);
@@ -98,19 +109,20 @@ class InventoryController extends Controller
     public function displayIndexUser()
     {
         if (request()->ajax()) {
-            return $this->userInventoriesService->display();
+            return $this->userDisplayInventoriesService->display();
         }
 
-        $inventories = $this->userInventoriesService->count();
+        $inventories = $this->userCountInventoryService->count();
+        $lists = $this->showSelectionService->showSelection();
         //$totalInv = $inventories->count();
 
-        return view('user.index', compact('inventories'));
+        return view('user.index', compact('inventories', 'lists'));
     }
 
     // index display of admin
     public function adminDisplay(Request $request)
     {
-        $data = $this->adminInventoriesService->display($request);
+        $data = $this->adminDisplayService->display($request);
         if ($data) return $data;
 
         return view('admin.index');
@@ -119,7 +131,7 @@ class InventoryController extends Controller
     // index display of manager
     public function managerDisplay(Request $request)
     {
-        $data = $this->managerInventoriesService->display($request);
+        $data = $this->managerDisplayService->display($request);
         if ($data) return $data;
 
         return view('manager.index');
@@ -128,7 +140,7 @@ class InventoryController extends Controller
     // manager approval
     public function approve(Request $request)
     {
-        $this->managerApprovalService->approve($request);
+        $this->managerApproveService->approve($request);
 
         return redirect()
             ->route('manager.index')
@@ -138,7 +150,7 @@ class InventoryController extends Controller
     // RTO recieve by admin
     public function adminRecieve(Request $request)
     {
-        $this->adminRecievingService->recieve($request);
+        $this->adminRecieveService->recieve($request);
 
         return redirect()
             ->route('admin.index')
@@ -149,7 +161,7 @@ class InventoryController extends Controller
     public function adminApprove(Request $request)
     {
         try {
-            $this->adminApprovalService->approve($request);
+            $this->adminVerifyService->verify($request);
 
             return redirect()
                 ->route('admin.index')
@@ -161,10 +173,10 @@ class InventoryController extends Controller
         }
     }
 
-    // transfer RTO to archives
+    // Processed RTO By Admin
     public function destroy($inventoryId)
     {
-        $this->tempToDelInventoriesService->toArchiveInventoryAndDelete($inventoryId);
+        $this->adminProcessedService->processed($inventoryId);
 
         return redirect()
             ->back()
@@ -173,19 +185,11 @@ class InventoryController extends Controller
 
     public function returnInventory($inventoryId)
     {
-        $this->returnInventoriesService->returnInventory($inventoryId);
+        $this->adminReturnService->returnInventory($inventoryId);
 
         return redirect()
             ->back()
             ->with('success', 'Inventory has been marked as returned.');
-    }
-    public function managerDestroy($inventoryId)
-    {
-        $this->managerTempToDelInventories->toArchiveInventoryAndDelete($inventoryId);
-
-        return redirect()
-            ->back()
-            ->with('success', 'Inventory archived successfully.');
     }
 
     // archive inventory
@@ -201,14 +205,14 @@ class InventoryController extends Controller
     // dispose an Inventory
     public function dispose($id, Request $request)
     {
-        $inventory = $this->disposeService->disposal($id, $request);
+        $inventory = $this->adminDisposeService->dispose($id, $request);
 
         return response()->json($inventory);
     }
 
     public function updateInventories(Request $request, $id)
     {
-        $this->userUpdateInventories->updateInventories($request->all(), $id);
+        $this->userUpdateInventoryService->update($request->all(), $id);
 
         return response()->json(['success' => true]);
     }

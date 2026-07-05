@@ -18,7 +18,7 @@
 
     <!-- Office Department -->
     <form method="POST" action="{{ route('admin.storeOffice') }}" class="dark:bg-stone-800 bg-gray-200 rounded-lg mx-6 mt-2" id="registerForm">
-        <h2 class="py-4 px-6 bg-green-600 rounded-t-lg text-xl font-bold text-white">Add Cost Center</h2>
+        <h2 class="py-4 px-6 bg-gradient-to-r from-emerald-500/90 to-green-600/90 backdrop-blur rounded-t-lg text-xl font-bold text-white">Add Cost Center</h2>
         @csrf
         <div class="p-10">
             <!-- office name -->
@@ -41,7 +41,7 @@
 
     @if(session('error'))
     <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 bg-red-500 text-white p-4 rounded shadow-lg"
+        class="fixed top-5 right-5 z-50 bg-red-500 text-white p-4 rounded shadow-lg"
         x-init="setTimeout(() => show = false, 3000)">
         <p>{{ session('error') }}</p>
     </div>
@@ -49,7 +49,7 @@
 
     @if(session('success'))
     <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 bg-green-500 text-white p-4 rounded shadow-lg"
+        class="fixed top-5 right-5 z-50 bg-green-500 text-white p-4 rounded shadow-lg"
         x-init="setTimeout(() => show = false, 3000)">
         <p>{{ session('success') }}</p>
     </div>

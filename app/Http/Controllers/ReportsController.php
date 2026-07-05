@@ -5,30 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\ArchiveInventories;
 use App\Models\Offices;
-use App\Services\InventoriesArchService;
-use App\Services\AdminArchInventories;
-use App\Services\ManagerArchInventories;
-use App\Services\UserArchInventories;
+use App\Services\API\Admin\Reports\AdminInventoryArchiveService;
+use App\Services\API\Manager\Reports\ManagerInventoryArchiveService;
+use App\Services\API\Manager\Reports\ManagerCountInventoryService;
+use App\Services\API\User\Reports\UserInventoryArchiveService;
 
 class ReportsController extends Controller
 {
     protected $inventoriesArchService;
-    protected $adminArchiveInventory;
-    protected $managerArchiveInventory;
-    protected $userArchiveInventory;
+    protected $adminInventoryArchiveService;
+    protected $userInventoryArchiveService;
+    protected $managerInventoryArchiveService;
+    protected $managerCountInventoryService;
 
     public function __construct(
-        InventoriesArchService $inventoriesArchService,
-        AdminArchInventories $adminArchiveInventory,
-        ManagerArchInventories $managerArchiveInventory,
-        UserArchInventories $userArchiveInventory,
+        AdminInventoryArchiveService $adminInventoryArchiveService,
+        UserInventoryArchiveService $userInventoryArchiveService,
+        ManagerInventoryArchiveService $managerInventoryArchiveService,
+        ManagerCountInventoryService $managerCountInventoryService,
     ) 
     {
         // Inventories constructor
-        $this->inventoriesArchService = $inventoriesArchService;
-        $this->adminArchiveInventory = $adminArchiveInventory;
-        $this->managerArchiveInventory = $managerArchiveInventory;
-        $this->userArchiveInventory = $userArchiveInventory;
+        $this->adminInventoryArchiveService = $adminInventoryArchiveService;
+        $this->userInventoryArchiveService = $userInventoryArchiveService;
+        $this->managerInventoryArchiveService = $managerInventoryArchiveService;
+        $this->managerCountInventoryService = $managerCountInventoryService;
     }
 
     //the function where the archive inventory fetches and display in admin reports
@@ -36,7 +37,7 @@ class ReportsController extends Controller
     {
 
         if (request()->ajax()) {
-            return $this->adminArchiveInventory->display();
+            return $this->adminInventoryArchiveService->display();
         }
         // This count all the user's table
         // archive inventories table and office table
@@ -51,10 +52,10 @@ class ReportsController extends Controller
     public function managerReports()
     {
         if (request()->ajax()) {
-            return $this->managerArchiveInventory->display();
+            return $this->managerInventoryArchiveService->display();
         }
 
-        $totalInv = $this->managerArchiveInventory->count();
+        $totalInv = $this->managerCountInventoryService->count();
 
         return view('manager.reports', compact('totalInv'));
     }
@@ -62,11 +63,11 @@ class ReportsController extends Controller
     public function userReports()
     {
         if(request()->ajax()) {
-            return $this->userArchiveInventory->display();
+            return $this->userInventoryArchiveService->display();
         }
 
-        $userArchiveInventory = $this->inventoriesArchService->getAll();
-        $totalArch = $userArchiveInventory->count();
+        $userInventoryArchiveService = $this->userInventoryArchiveService->getAll();
+        $totalArch = $userInventoryArchiveService->count();
         return view('user.reports', compact('totalArch'));
     }
 }

@@ -17,11 +17,11 @@
     </div>
 
     <!-- Registration Form -->
-    <form method="POST" action="{{ route('admin.register') }}" class="dark:bg-stone-800 mx-6 bg-gray-200 rounded-lg mt-2 " id="registerForm">
-        <h2 class="py-4 px-6 bg-green-600 rounded-t-lg text-xl font-bold text-white">Register Cost Center Head
+    <form method="POST" action="{{ route('admin.register') }}" class="dark:bg-stone-800 mx-6 bg-gray-200 rounded-lg mt-2 " enctype="multipart/form-data" id="registerForm">
+        <h2 class="rounded-t-lg bg-gradient-to-r from-emerald-500/90 to-green-600/90 backdrop-blur px-6 py-5 text-xl font-bold text-white">Register Cost Center Head
             <p class="text-sm font-semibold">all fields are required</p>
         </h2>
-        
+
         @csrf
         <div class="lg:p-8 md:p-10 mx-10">
 
@@ -62,6 +62,7 @@
                     <option value="{{ $office->id }}">{{ $office->department }}</option>
                     @endforeach
                 </select>
+
 
                 @error('office_id')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

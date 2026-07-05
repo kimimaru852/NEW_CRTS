@@ -15,7 +15,7 @@
 
     <div class="text-gray-900 dark:text-gray-100 w-full py-6 ">
         <h3 class="text-gray-800 dark:text-green-200 py-4 px-4 font-bold text-lg">Total Records: {{ $inventories }}</h3>
-        <div class="text-xl mx-2 py-6 px-4 rounded-t-lg bg-stone-600 text-gray-50 font-bold">Records Turn-Over Inventory List</div>
+        <div class="text-xl mx-2 py-6 px-4 rounded-t-lg bg-gradient-to-b from-blue-600 to-indigo-800 text-gray-50 font-bold">Records Turn-Over Inventory List</div>
         <div>
             <div class="px-2">
                 <div class="bg-zinc-200 dark:bg-stone-800 shadow overflow-hidden">
@@ -31,6 +31,7 @@
                                         <th class="text-center px-6 py-3 text-xs font-bold text-gray-500 dark:text-green-900 uppercase tracking-wider">Approval Status(Head)</th>
                                         <th class="text-center px-6 py-3 text-xs font-bold text-gray-500 dark:text-green-900 uppercase tracking-wider">Status</th>
                                         <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Loc Code</th>
+                                        <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">NAP Authority No</th>
                                         <th class="text-center px-6 py-3 text-xs font-bold text-gray-500 dark:text-green-900 uppercase tracking-wider">Action</th>
                                     </tr>
                                 </thead>
@@ -97,6 +98,10 @@
                                                 name: 'loc_code'
                                             },
                                             {
+                                                data: 'nap_authority_no',
+                                                name: 'nap_authority_no'
+                                            },
+                                            {
                                                 data: 'action',
                                                 name: 'action',
                                                 orderable: false,
@@ -130,7 +135,7 @@
 
     @if(session('error'))
     <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 bg-red-500 text-white p-4 rounded shadow-lg"
+        class="fixed top-5 right-5 z-50 bg-red-500 text-white p-4 rounded shadow-lg"
         x-init="setTimeout(() => show = false, 3000)">
         <p>{{ session('error') }}</p>
     </div>
@@ -138,7 +143,7 @@
 
     @if(session('success'))
     <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 bg-green-500 text-white p-4 rounded shadow-lg"
+        class="fixed top-5 right-5 z-50 bg-green-500 text-white p-4 rounded shadow-lg"
         x-init="setTimeout(() => show = false, 3000)">
         <p>{{ session('success') }}</p>
     </div>

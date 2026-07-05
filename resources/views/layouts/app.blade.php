@@ -42,7 +42,7 @@
         <div class="flex-grow h-screen overflow-y-auto flex flex-col">
             <!-- Page Content -->
             <main class="flex flex-1 flex-col">
-                <div class="flex justify-between px-6 py-3 bg-gray-100 dark:bg-stone-900 dark:text-gray-200 h-12 w-full sticky top-0 z-100">
+                <div class="flex justify-between px-6 py-3 bg-gray-100 dark:bg-stone-900 dark:text-gray-200 h-12 w-full sticky top-0 z-10">
                     <!-- Sidebar Toggle (only on small screens) -->
                     <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

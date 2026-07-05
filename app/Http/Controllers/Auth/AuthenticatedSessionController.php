@@ -27,25 +27,17 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-        $request->session()->regenerate();
-        $user = $request->user();
 
-        // login admin
-        if ($user->hasRole('admin')) {
-            return redirect()->route('admin.index');
-        }
-        // login cost-center
-        elseif ($user->hasRole('manager')) {
-            return redirect()->route('manager.index');
-        }
-        // login user
-        elseif ($user->hasRole('user')) {
-            return redirect()->route('user.index');
-        }
-        // fallback
-        else {
-            return redirect('/');
-        }
+        $request->session()->regenerate();
+
+        $user = User::find($request->user()->id);
+
+        return match (true) {
+            $user->hasRole('admin') => redirect()->intended(route('admin.index')),
+            $user->hasRole('manager') => redirect()->intended(route('manager.index')),
+            $user->hasRole('user') => redirect()->intended(route('user.index')),
+            default => redirect('/'),
+        };
     }
 
     /**

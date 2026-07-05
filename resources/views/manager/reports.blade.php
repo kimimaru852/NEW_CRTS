@@ -30,7 +30,7 @@
     <div class="text-gray-900 dark:text-gray-100">
         <h3 class="text-gray-800 dark:text-green-200 py-4 px-4 font-bold text-lg">Total Inventory: {{$totalInv}}</h3>
         <div class="flex justify-between items-center mx-2 mt-4 ">
-            <h2 class="w-full py-6 px-4 bg-stone-600 text-gray-50 font-bold text-xl rounded-t-lg">Records Overview</h2>
+            <h2 class="w-full py-6 px-4 bg-gradient-to-b from-blue-600 to-indigo-800 text-gray-50 font-bold text-xl rounded-t-lg">Records Overview</h2>
         </div>
         <div class="mx-2">
             <div class="bg-zinc-200 dark:bg-stone-800 shadow overflow-hidden">
@@ -45,6 +45,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Date of Disposal</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Location Code</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">NAP Authority No</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
@@ -98,6 +99,10 @@
                                         {
                                             data: 'loc_code',
                                             name: 'loc_code'
+                                        },
+                                        {
+                                            data: 'nap_authority_no',
+                                            name: 'nap_authority_no'
                                         },
                                         {
                                             data: 'action',
