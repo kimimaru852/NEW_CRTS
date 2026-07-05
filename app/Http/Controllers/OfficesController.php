@@ -3,58 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\Offices;
-use App\Services\CreateOfficeService;
-use App\Services\DeleteOfficeService;
-use App\Services\DisplayOfficesServices;
 use Illuminate\Http\Request;
-use App\Services\UpdateOfficeService;
+use App\Services\API\Admin\CostCenter\AdminCreateCostCenterService;
+use App\Services\API\Admin\CostCenter\AdminDeleteCostCenterService;
+use App\Services\API\Admin\CostCenter\AdminDisplayCostCenterService;
+use App\Services\API\Admin\CostCenter\AdminUpdateCostCenterService;
+
+
 
 class OfficesController extends Controller
 {
-    protected $createOfficeService;
-    protected $displayOfficesService;
-    protected $deleteOfficeService;
-    protected $updateOfficeService;
+    protected $adminCreateCostCenterService;
+    protected $admindisplayCostCenterService;
+    protected $adminDeleteCostCenterService;
+    protected $adminUpdateCostCenterService;
 
     public function __construct(
-        CreateOfficeService $createOfficeService,
-        DisplayOfficesServices $displayOfficesService,
-        DeleteOfficeService $deleteOfficeService,
-        UpdateOfficeService $updateOfficeService
+        AdminCreateCostCenterService $adminCreateCostCenterService,
+        AdminDisplayCostCenterService $admindisplayCostCenterService,
+        AdminDeleteCostCenterService $adminDeleteCostCenterService,
+        AdminUpdateCostCenterService $adminUpdateCostCenterService
     ) {
-        $this->createOfficeService = $createOfficeService;
-        $this->displayOfficesService = $displayOfficesService;
-        $this->deleteOfficeService = $deleteOfficeService;
-        $this->updateOfficeService = $updateOfficeService;
+        $this->adminCreateCostCenterService = $adminCreateCostCenterService;
+        $this->admindisplayCostCenterService = $admindisplayCostCenterService;
+        $this->adminDeleteCostCenterService = $adminDeleteCostCenterService;
+        $this->adminUpdateCostCenterService = $adminUpdateCostCenterService;
     }
 
     public function storeOffice(Request $request)
     {
-        return $this->createOfficeService->createOffice($request);
-    }
+        return $this->adminCreateCostCenterService->create($request);
+    } 
 
     public function fetchOfficeSelection()
     {
-        $offices = $this->displayOfficesService->display();
+        $offices = $this->admindisplayCostCenterService->display();
 
         return view('admin.register', compact('offices'));
     }
 
     public function displayOffice()
     {
-        $offices = $this->displayOfficesService->display();
+        $offices = $this->admindisplayCostCenterService->display();
 
         return view('admin.office', compact('offices'));
     }
 
     public function destroyOffice(Request $request, Offices $office)
     {
-        return $this->deleteOfficeService->delete($request, $office);
+        return $this->adminDeleteCostCenterService->destroy($request, $office);
     }
 
     public function updateOffice(Request $request, Offices $office)
     {
-        $result = $this->updateOfficeService->update($request, $office);
+        $result = $this->adminUpdateCostCenterService->update($request, $office);
 
         return response()->json($result);
     }

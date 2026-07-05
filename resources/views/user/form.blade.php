@@ -17,13 +17,12 @@
     </div>
     <form method="POST" action="{{ route('user.form') }}" class="bg-gray-200 dark:bg-stone-800 rounded-lg mx-4 md:mx-10 mt-6 shadow-lg">
         @csrf
-        <div class="rounded-t-lg bg-green-500 px-6 py-5">
+        <div class="rounded-t-lg bg-gradient-to-r from-emerald-500/90 to-green-600/90 backdrop-blur px-6 py-5">
             <h2 class="text-2xl font-bold text-white"> RTO Inventory Form</h2>
             <p class="text-sm font-medium text-green-100">All fields are required.</p>
         </div>
 
-        <div class="p-6 md:p-10" x-data="{ items: [{}] }">
-
+        <div class="p-6 md:p-10" x-data="inventoryForm()">
             <template x-for="(item, index) in items" :key="index">
                 <div class="border border-stone-300 dark:border-stone-600 p-6 rounded-lg mb-6 bg-white dark:bg-stone-700 shadow-sm">
                     <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4"> Items #<span x-text="index + 1"></span></h3>
@@ -32,7 +31,28 @@
                         <!-- Description -->
                         <div>
                             <x-input-label :value="__('Document Description')" />
-                            <input required type="text" :name="'items[' + index + '][description]'" x-model="item.description" placeholder="Ex. Inspection and Receiving Report" class="form-input w-full dark:bg-stone-800 text-stone-800 dark:text-white">
+
+                            <select required
+                                :name="'items[' + index + '][grds_id]'"
+                                x-model="item.grds_id"
+                                @change="updateDescription(index)"
+                                class="form-select w-full dark:bg-stone-800 text-stone-800 dark:text-white">
+
+                                <option value="" disabled selected hidden>
+                                    -- Select Description --
+                                </option>
+
+                                @foreach($lists as $list)
+                                <option value="{{ $list->id }}">
+                                    {{ $list->description }}
+                                </option>
+                                @endforeach
+                            </select>
+
+                            <!-- Hidden actual description -->
+                            <input type="hidden"
+                                :name="'items[' + index + '][description]'"
+                                x-model="item.description">
                         </div>
 
                         <!-- Doc Date -->
@@ -62,34 +82,38 @@
                         </div>
 
                         <!-- Retention Period -->
-                        <div x-effect="if (item.document_status === 'Permanent') item.retention_period = ''">
+                        <div>
                             <x-input-label :value="__('Retention Period (years)')" />
-                            <input type="number"
+
+                            <input
+                                type="text"
+                                readonly
                                 :name="'items[' + index + '][retention_period]'"
                                 x-model="item.retention_period"
-                                placeholder="Ex. 1"
-                                class="form-input w-full dark:bg-stone-800 text-stone-800 dark:text-white"
-                                :disabled="item.document_status === 'Permanent'"
-                                :class="item.status === 'Permanent' ? 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed' : ''">
+                                class="form-input w-full bg-gray-200 dark:bg-stone-900 cursor-not-allowed text-stone-800 dark:text-white">
                         </div>
                         <!-- RDS_No -->
                         <div>
                             <x-input-label :value="__('GRDS/RDS No')" />
-                            <input type="number"
+
+                            <input
+                                type="text"
+                                readonly
                                 :name="'items[' + index + '][rds_no]'"
                                 x-model="item.rds_no"
-                                placeholder="Ex. 1 (Kindly check on the latest TransCo RDS or NAP GRDS)"
-                                class="form-input w-full dark:bg-stone-800 text-stone-800 dark:text-white">
+                                class="form-input w-full bg-gray-200 dark:bg-stone-900 cursor-not-allowed text-stone-800 dark:text-white">
                         </div>
 
                         <!-- Status -->
                         <div>
                             <x-input-label :value="__('Document Status')" />
-                            <select :name="'items[' + index + '][document_status]'" x-model="item.document_status" class="form-select w-full dark:bg-stone-800 text-stone-800 dark:text-white">
-                                <option value="" disabled selected hidden>-- Select Status --</option>
-                                <option value="Permanent">Permanent</option>
-                                <option value="Temporary">Temporary</option>
-                            </select>
+
+                            <input
+                                type="text"
+                                readonly
+                                :name="'items[' + index + '][document_status]'"
+                                x-model="item.document_status"
+                                class="form-input w-full bg-gray-200 dark:bg-stone-900 cursor-not-allowed text-stone-800 dark:text-white">
                         </div>
                     </div>
 
@@ -106,7 +130,16 @@
 
             <!-- Add Another Item Button -->
             <div class="flex justify-start mb-8">
-                <x-primary-button type="button" @click="items.push({})">
+                <x-primary-button type="button" @click="items.push({
+                                                        grds_id: '',
+                                                        description: '',
+                                                        retention_period: '',
+                                                        document_status: '',
+                                                        rds_no: '',
+                                                        doc_date: '',
+                                                        quantity: '',
+                                                        unit_code: ''
+                                                    })">
                     Add Another Item
                 </x-primary-button>
             </div>
@@ -125,7 +158,7 @@
     <!-- Flash Messages -->
     @if(session('error'))
     <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 bg-red-500 text-white p-4 rounded shadow-lg"
+        class="fixed top-5 right-5 z-50 bg-red-500 text-white p-4 rounded shadow-lg"
         x-init="setTimeout(() => show = false, 3000)">
         <p>{{ session('error') }}</p>
     </div>
@@ -133,9 +166,34 @@
 
     @if(session('success'))
     <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 bg-green-500 text-white p-4 rounded shadow-lg"
+        class="fixed top-5 right-5 z-50 bg-green-500 text-white p-4 rounded shadow-lg"
         x-init="setTimeout(() => show = false, 3000)">
         <p>{{ session('success') }}</p>
     </div>
     @endif
+
+    <script>
+        function inventoryForm() {
+            return {
+                items: [{}],
+
+                descriptions: @json($lists),
+
+                updateDescription(index) {
+                    let selectedId = this.items[index].grds_id;
+
+                    let selected = this.descriptions.find(
+                        item => item.id == selectedId
+                    );
+
+                    if (selected) {
+                        this.items[index].description = selected.description;
+                        this.items[index].retention_period = selected.retention_period;
+                        this.items[index].document_status = selected.document_status;
+                        this.items[index].rds_no = selected.grds_rds_no;
+                    }
+                }
+            }
+        }
+    </script>
 </x-app-layout>

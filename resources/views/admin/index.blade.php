@@ -6,7 +6,7 @@
                 <h1 class="text-xl font-bold text-green-400">Welcome, <span class="capitalize text-stone-800 dark:text-slate-50">{{Auth::user()->name}}</span></h1>
             </div>
             <div class="flex underline underline-offset-4">
-                <a href="{{ route('admin.manage-accounts') }}">Manage Accounts</a>
+                <a href="{{ route('admin.grdslists') }}">GRDS/RDS Lists</a>
 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -22,7 +22,7 @@
         </div>
 
         <div class="text-gray-900 dark:text-gray-100 w-full py-6">
-            <div class="text-xl mx-2 py-6 px-4 rounded-t-lg bg-stone-600 text-gray-50 font-bold">Records Turn-Over Inventory Lists</div>
+            <div class="text-xl mx-2 py-6 px-4 rounded-t-lg bg-gradient-to-b from-blue-600 to-indigo-800 text-gray-50 font-bold">Records Turn-Over Inventory Lists</div>
             <div>
                 <div class="px-2">
                     <div class="bg-white dark:bg-stone-800 p-4 shadow overflow-hidden sm:rounded-l">
@@ -33,6 +33,7 @@
                                     <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">cost center</th>
                                     <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">prepared by</th>
                                     <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Cost Center Head</th>
+                                    <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">NAP Authority No</th>
                                     <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Turn-Over Date</th>
                                     <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Status</th>
                                     <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Location Code</th>
@@ -68,6 +69,10 @@
                             {
                                 data: 'manager_approval',
                                 name: 'manager_approval'
+                            },
+                            {
+                                data: 'nap_authority_no',
+                                name: 'nap_authority_no'
                             },
                             {
                                 data: 'created_at',
@@ -190,7 +195,7 @@
         </div>
         @if(session('error'))
         <div x-data="{ show: true }" x-show="show"
-            class="fixed top-5 right-5 bg-red-500 text-white p-4 rounded shadow-lg"
+            class="fixed top-5 right-5 z-50 bg-red-500 text-white p-4 rounded shadow-lg"
             x-init="setTimeout(() => show = false, 3000)">
             <p>{{ session('error') }}</p>
         </div>
@@ -198,7 +203,7 @@
 
         @if(session('success'))
         <div x-data="{ show: true }" x-show="show"
-            class="fixed top-5 right-5 bg-green-500 text-white p-4 rounded shadow-lg"
+            class="fixed top-5 right-5 z-50 bg-green-500 text-white p-4 rounded shadow-lg"
             x-init="setTimeout(() => show = false, 3000)">
             <p>{{ session('success') }}</p>
         </div>

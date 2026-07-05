@@ -193,11 +193,15 @@ class InventoriesExport implements FromCollection, WithStyles, WithEvents
                 ));
                 $row++;
 
-                $sheet->setCellValue("A{$row}", "LOCATION CODE: " . ($inventory->loc_code ?? ''));
+                $sheet->setCellValue("A{$row}", "NAP Authority No.: " . ($inventory->nap_authority_no ?? ''));
                 $sheet->mergeCells("A{$row}:C{$row}");
-
                 $sheet->setCellValue("F{$row}", "VALIDATED BY: " . ($inventory->verified_by ?? ''));
                 $sheet->mergeCells("F{$row}:G{$row}");
+                $sheet->setCellValue("I{$row}", "DATE: " . (
+                    $inventory->verified_date
+                    ? \Carbon\Carbon::parse($inventory->verified_date)->format('Y-m-d')
+                    : ''
+                ));
                 $sheet->getStyle("F{$row}")->applyFromArray([
                     'borders' => [
                         'left' => [
@@ -205,12 +209,17 @@ class InventoriesExport implements FromCollection, WithStyles, WithEvents
                         ],
                     ],
                 ]);
+                $row++;
 
-                $sheet->setCellValue("I{$row}", "DATE: " . (
-                    $inventory->verified_date
-                    ? \Carbon\Carbon::parse($inventory->verified_date)->format('Y-m-d')
-                    : ''
-                ));
+                $sheet->setCellValue("A{$row}", "LOCATION CODE: " . ($inventory->loc_code ?? ''));
+                $sheet->mergeCells("A{$row}:C{$row}");
+                $sheet->getStyle("F{$row}")->applyFromArray([
+                    'borders' => [
+                        'left' => [
+                            'borderStyle' => Border::BORDER_THIN,
+                        ],
+                    ],
+                ]);
 
                 // ✅ Apply outline border AFTER everything is written
                 $lastRow = $sheet->getHighestRow();

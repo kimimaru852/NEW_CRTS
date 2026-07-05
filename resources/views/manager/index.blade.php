@@ -21,7 +21,7 @@
     </div>
 
     <div class="text-gray-900 dark:text-gray-100 w-full py-6">
-        <div class="text-xl mx-2 py-6 px-4 rounded-t-lg bg-stone-600 text-gray-50 font-bold">Records Turn-Over Inventory List</div>
+        <div class="text-xl mx-2 py-6 px-4 rounded-t-lg bg-gradient-to-b from-blue-600 to-indigo-800 text-gray-50 font-bold">Records Turn-Over Inventory List</div>
         <div>
             <div class="px-2">
                 <div class="text-gray-900 dark:text-gray-100">
@@ -33,6 +33,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">prepared by</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Turn-Over Date</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Approval Status(Head)</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">NAP Authority No</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Status</th>
                                     <th class="text-center px-6 py-3 text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Location Code</th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-green-900 uppercase tracking-wider">Action</th>
@@ -91,6 +92,10 @@
                                             td.classList.add("bg-yellow-200", "text-yellow-800");
                                         }
                                     }
+                                },
+                                {
+                                    data: 'nap_authority_no',
+                                    name: 'nap_authority_no'
                                 },
                                 {
                                     data: 'disposal_status',

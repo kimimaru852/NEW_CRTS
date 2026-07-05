@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ReturnInventoriesServices;
 use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
@@ -28,5 +29,9 @@ class InventoryItem extends Model
     public function inventory()
     {
         return $this->belongsTo(Inventory::class);
+    }
+
+    public function grds_list() {
+        return $this->hasOne(GrdsLists::class);
     }
 }

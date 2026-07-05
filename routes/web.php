@@ -6,6 +6,7 @@ use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GrdsListsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,10 +20,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.reports');
 
     Route::get('/admin/export-xlsx', [ExcelController::class, 'exportAllExcel'])
-    ->name('admin.exportExcel');
+        ->name('admin.exportExcel');
 
     Route::get('/admin/dashboard', [InventoryController::class, 'adminDisplay'])
         ->name('admin.index');
+
+    Route::get('/admin/grds-lists', [GrdsListsController::class, 'displayGrdsLists'])
+        ->name('admin.grdslists');
+
+    Route::get('/admin/grds-list-print', [GrdsListsController::class, 'printGdrsList'])
+        ->name('admin.print-grds-list');
+
+    Route::post('/admin/grds-list/create', [GrdsListsController::class, 'create'])
+        ->name('admin.creategrdslist');
 
     Route::get('/admin/office', [OfficesController::class, 'displayOffice'])
         ->name('admin.office');
@@ -50,6 +60,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::put('/admin/return/{inventory}', [InventoryController::class, 'returnInventory'])
         ->name('inventory.return');
+
+    Route::put('/admin/grds/update/{id}', [GrdsListsController::class, 'update'])
+        ->name('admin.grds.update');
+
+    Route::delete('/admin/grds-rds/{id}', [GrdsListsController::class, 'deleteGrdsRds'])
+        ->name('admin.grdsrds.delete');
 
     Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])
         ->name('user.destroy');
@@ -99,9 +115,6 @@ Route::middleware(['auth', 'role:manager'])->group(function () {
 
     Route::post('/user/register', [UserController::class, 'registerUser'])
         ->name('user.register');
-
-    Route::delete('/manager/inventory/{inventory}', [InventoryController::class, 'managerDestroy'])
-        ->name('inventory.destroy');
 });
 
 // User Route
@@ -110,9 +123,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         ->name('user.reports');
 
     Route::get('/user/dashboard', [InventoryController::class, 'displayIndexUser'])
-        ->name('user.index');;
+        ->name('user.index');
 
-    Route::get('/user/inventory-form', [InventoryController::class, 'view'])
+    Route::get('/user/create-inventory', [InventoryController::class, 'displaySelection'])
         ->name('form');
 
     Route::post('/user/create-inventory', [InventoryController::class, 'create'])

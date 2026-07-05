@@ -44,16 +44,14 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $user = User::where('email', $this->input('email'))->first();
-
-        // Check if locked
-        if ($user && $user->is_locked) {
+        if ($user && ! $user->hasRole('admin') && $user->is_locked) {
             throw ValidationException::withMessages([
                 'email' => __('Disabled account, please contact your admin to unlock it.'),
             ]);
         }
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            if ($user) {
+            if ($user && ! $user->hasRole('admin')) {
                 $user->increment('login_attempts');
 
                 if ($user->login_attempts >= 3) {
@@ -73,10 +71,10 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
-
-        // Reset login attempts if success
-        if ($user) {
-            $user->update(['login_attempts' => 0]);
+        if ($user && ! $user->hasRole('admin')) {
+            $user->update([
+                'login_attempts' => 0,
+            ]);
         }
     }
 

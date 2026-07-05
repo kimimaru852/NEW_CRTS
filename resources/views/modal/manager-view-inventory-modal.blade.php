@@ -192,7 +192,7 @@
 @include('modal.manager-disposal-modal')
 @if (session('success'))
 <div x-data="{ show: true }" x-show="show"
-    class="fixed top-5 right-5 bg-green-500 text-white p-4 rounded shadow-lg"
+    class="fixed top-5 right-5 z-50 bg-green-500 text-white p-4 rounded shadow-lg"
     x-init="setTimeout(() => show = false, 3000)" class="bg-green-500 text-white p-2 rounded my-4 text-center">
     {{ session('success') }}
 </div>

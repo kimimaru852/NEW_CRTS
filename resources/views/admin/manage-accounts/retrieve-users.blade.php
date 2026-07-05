@@ -1,112 +1,163 @@
 <section>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
         @foreach($users as $user)
         <!-- Cards -->
-        <div class="bg-stone-200 dark:bg-stone-700 border-t-8 border-green-500 overflow-hidden shadow shadow-stone-500 sm:rounded-lg ">
-            <!-- department -->
-            <div class="flex justify-end text-gray-900 dark:text-gray-100 w-full px-4 mt-4">
-                <div class="flex flex-col text-center">
-                    <h5 class="truncate capitalize text-lg px-3 bg-blue-200 rounded-full text-blue-800 font-bold" title="{{ $user->office?->department ?? 'No Office Assigned' }}">
-                        {{ $user->office?->department ?? 'No Office Assigned' }}
-                    </h5>
-                    <p class="text-xs">Cost Center</p>
-                </div>
+        <div class="relative overflow-hidden rounded-3xl bg-white/80 dark:bg-stone-800/80 backdrop-blur-xl border border-stone-200/60 dark:border-stone-700 shadow-xl hover:shadow-2xl transition-all duration-300">
 
-            </div>
-            <div class="flex flex-col text-gray-900 dark:text-gray-100 p-6">
-                <div class="flex flex-1 gap-4">
-                    <!-- SVG Icon -->
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 sm:h-12 sm:w-12" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
+            <!-- Decorative Background -->
+            <div class="absolute top-0 right-0 h-40 w-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 h-32 w-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
 
-                    <!-- Text Content -->
-                    <div>
-                        <!-- Name -->
-                        <div class="text-xl md:text-md xs:text-sm font-bold">
-                            <h1 class="w-[250px] sm:w-[300px] truncate capitalize" title="{{ $user->name }}">
-                                {{ $user->name }} -
-                                <span title="{{ $user->display_roles ?? 'No Role Assigned' }}">
-                                    {{ $user->display_roles ?? 'No Role Assigned' }}
-                                </span>
-                            </h1>
-                        </div>
+            <div class="relative p-6">
 
-                        <div>
-                            @if($user->is_locked)
-                            <form action="{{ route('admin.users.unlock', $user->id) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                <div class="flex content-center bold">
-                                    <span class="text-md text-red-500 font-bold flex">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <!-- Header -->
+                <div class="flex justify-between items-start">
+                    <div class="flex justify-between w-full flex-wrap">
+                        <!-- User Profile -->
+                        <div class="flex gap-4 items-center">
+
+                            <!-- Avatar -->
+                            <div class="relative">
+                                <div class="h-18 w-18 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 p-[2px] shadow-lg">
+                                    <div class="h-18 w-18 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-lg">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-10 w-10"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                                clip-rule="evenodd" />
                                         </svg>
-                                        Locked
-                                    </span>
+                                    </div>
                                 </div>
-                            </form>
-                            @else
-                            <span class="text-md text-green-500 font-bold flex">
-                                <span class="flex content-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+
+                                <!-- Status Indicator -->
+                                <div class="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-4 border-white dark:border-stone-800
+                        {{ $user->is_locked ? 'bg-red-500' : 'bg-green-500' }}">
+                                </div>
+                            </div>
+
+                            <!-- User Info -->
+                            <div class="min-w-0">
+                                <h2 class="text-lg font-bold text-stone-800 dark:text-white truncate capitalize">
+                                    {{ $user->name }}
+                                </h2>
+
+                                <p class="text-sm text-stone-500 dark:text-stone-400 capitalize">
+                                    {{ $user->display_roles ?? 'No Role Assigned' }}
+                                </p>
+
+                                <!-- Status Badge -->
+                                @if($user->is_locked)
+                                <span class="inline-flex mt-2 items-center gap-2 rounded-full bg-red-100 dark:bg-red-900/30 px-3 py-1 text-xs font-semibold text-red-700 dark:text-red-300">
+                                    <span class="h-2 w-2 rounded-full bg-red-500"></span>
+                                    Account Locked
                                 </span>
-                                Active
-                            </span>
-                            @endif
+                                @else
+                                <span class="inline-flex mt-2 items-center gap-2 rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                                    Active User
+                                </span>
+                                @endif
+                            </div>
                         </div>
 
-                        <!-- Email -->
-                        <div class="text-lg md:text-sm xs:text-sm">
-                            <h5 class="w-[250px] sm:w-[300px] truncate" title="{{ $user->email }}">
-                                Email: <a class="underline" href="mailto:{{ $user->email }}">{{ $user->email }}</a>
-                            </h5>
+                        <!-- Cost Center -->
+                        <div class="hidden sm:flex flex-col items-end">
+                            <span class="rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-600 px-4 py-2 text-white text-sm font-semibold shadow-md truncate max-w-[180px]"
+                                title="{{ $user->office?->department ?? 'No Office Assigned' }}">
+                                {{ $user->office?->department ?? 'No Office Assigned' }}
+                            </span>
+
+                            <span class="text-xs text-stone-500 dark:text-stone-400 mt-1">
+                                Cost Center
+                            </span>
                         </div>
+                    </div>
+
+                </div>
+
+                <!-- Divider -->
+                <div class="my-6 border-t border-stone-200 dark:border-stone-700"></div>
+
+                <!-- Info Grid -->
+                <div class="grid md:grid-cols-2 gap-4">
+
+                    <!-- Email -->
+                    <div class="rounded-2xl bg-stone-100 dark:bg-stone-900 p-4">
+                        <p class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">
+                            Email
+                        </p>
+
+                        <a href="mailto:{{ $user->email }}"
+                            class="mt-1 block truncate text-blue-600 dark:text-blue-400 font-medium hover:underline">
+                            {{ $user->email }}
+                        </a>
+                    </div>
+
+                    <!-- Signature -->
+                    <div class="rounded-2xl bg-stone-100 dark:bg-stone-900 p-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-wide text-stone-500 dark:text-stone-400">
+                                Signature
+                            </p>
+
+                            <p class="text-sm font-medium text-stone-700 dark:text-stone-300">
+                                User Signature
+                            </p>
+                        </div>
+
+                        <img src="{{ $user->signature ? asset('storage/' . $user->signature) : asset('images/fall-back-signature.png') }}"
+                            class="h-14 w-14 rounded-xl border border-stone-300 dark:border-stone-600 object-cover shadow">
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="flex flex-1 justify-end mt-8 gap-4">
-                    <!-- Edit Button -->
-                    <x-success-button type="button" x-data=""
+                <!-- Buttons -->
+                <div class="mt-8 flex flex-wrap justify-end gap-3">
+
+                    <!-- Edit -->
+                    <x-success-button
+                        type="button"
+                        class="rounded-2xl shadow-md hover:scale-105 transition"
+                        x-data=""
                         x-on:click="$dispatch('open-modal', { 
-                                    name: 'edit-user', 
-                                    userId: {{ $user->id }}, 
-                                    userName: '{{ $user->name }}', 
-                                    userEmail: '{{ $user->email }}'
-                                })">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
-                        </svg>
+                    name: 'edit-user', 
+                    userId: {{ $user->id }}, 
+                    userName: '{{ $user->name }}', 
+                    userEmail: '{{ $user->email }}',
+                    userSignature: '{{ $user->signature }}'
+                })">
                         Edit
                     </x-success-button>
 
-                    <!-- unlock button -->
+                    <!-- Unlock -->
                     @if($user->is_locked)
                     <form action="{{ route('admin.users.unlock', $user->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
-                        <x-primary-button type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-                            </svg>
+
+                        <x-primary-button
+                            type="submit"
+                            class="rounded-2xl shadow-md hover:scale-105 transition">
                             Unlock
                         </x-primary-button>
                     </form>
                     @endif
 
+                    <!-- Delete -->
                     <form action="{{ route('user.destroy', $user->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <x-danger-button type="submit" x-data=""
-                            x-on:click.prevent="$dispatch('open-modal', { name: 'delete-user', userId: {{ $user->id }} })">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
-                            </svg>
+
+                        <x-danger-button
+                            type="submit"
+                            class="rounded-2xl shadow-md hover:scale-105 transition"
+                            x-data=""
+                            x-on:click.prevent="$dispatch('open-modal', {
+                        name: 'delete-user',
+                        userId: {{ $user->id }}
+                    })">
                             Delete
                         </x-danger-button>
                     </form>
@@ -117,5 +168,6 @@
         @endforeach
         @include('modal.edit-user-modal')
         @include('modal.delete-user-modal')
+        @include('modal.signature-user-modal')
     </div>
 </section>

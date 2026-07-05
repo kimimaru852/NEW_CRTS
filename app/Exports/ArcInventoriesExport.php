@@ -40,7 +40,7 @@ class ArcInventoriesExport implements FromCollection, WithStyles, WithEvents
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
 
-                $sheet->mergeCells("A6:H8");
+                $sheet->mergeCells("A6:I8");
                 $sheet->getRowDimension(6)->setRowHeight(1.50);
                 $sheet->getRowDimension(7)->setRowHeight(2.25);
                 $sheet->getRowDimension(8)->setRowHeight(2.25);
@@ -98,7 +98,7 @@ class ArcInventoriesExport implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells("A{$row}:E{$row}");
 
                 $sheet->setCellValue("F{$row}", "APPROVED BY(Cost Center Head): " . ($inventory->manager_approval ?? ''));
-                $sheet->mergeCells("F{$row}:I$row}");
+                $sheet->mergeCells("F{$row}:I{$row}");
                 $row += 2;
 
                 // Table headings
@@ -193,11 +193,15 @@ class ArcInventoriesExport implements FromCollection, WithStyles, WithEvents
                 ));
                 $row++;
 
-                $sheet->setCellValue("A{$row}", "LOCATION CODE: " . ($inventory->loc_code ?? ''));
+                $sheet->setCellValue("A{$row}", "NAP Authority No.: " . ($inventory->nap_authority_no ?? ''));
                 $sheet->mergeCells("A{$row}:C{$row}");
-
                 $sheet->setCellValue("F{$row}", "VALIDATED BY: " . ($inventory->verified_by ?? ''));
                 $sheet->mergeCells("F{$row}:G{$row}");
+                $sheet->setCellValue("I{$row}", "DATE: " . (
+                    $inventory->verified_date
+                    ? \Carbon\Carbon::parse($inventory->verified_date)->format('Y-m-d')
+                    : ''
+                ));
                 $sheet->getStyle("F{$row}")->applyFromArray([
                     'borders' => [
                         'left' => [
@@ -205,12 +209,17 @@ class ArcInventoriesExport implements FromCollection, WithStyles, WithEvents
                         ],
                     ],
                 ]);
+                $row++;
 
-                $sheet->setCellValue("I{$row}", "DATE: " . (
-                    $inventory->approved_date
-                    ? \Carbon\Carbon::parse($inventory->verified_date)->format('Y-m-d')
-                    : ''
-                ));
+                $sheet->setCellValue("A{$row}", "LOCATION CODE: " . ($inventory->loc_code ?? ''));
+                $sheet->mergeCells("A{$row}:C{$row}");
+                $sheet->getStyle("F{$row}")->applyFromArray([
+                    'borders' => [
+                        'left' => [
+                            'borderStyle' => Border::BORDER_THIN,
+                        ],
+                    ],
+                ]);
 
                 // ✅ Apply outline border AFTER everything is written
                 $lastRow = $sheet->getHighestRow();
@@ -231,7 +240,7 @@ class ArcInventoriesExport implements FromCollection, WithStyles, WithEvents
                     ->setWrapText(true);
 
                 // Auto-size columns
-                foreach (range('A', 'H') as $c) {
+                foreach (range('A', 'I') as $c) {
                     $sheet->getColumnDimension($c)->setAutoSize(true);
                 }
             },
