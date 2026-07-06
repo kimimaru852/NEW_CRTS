@@ -75,7 +75,7 @@ class AdminDisplayService
 
                         <button 
                             x-data 
-                            x-on:click="$dispatch(\'confirm-dispose\', { id: ' . $row->id . ' })"
+                            x-on:click="$dispatch(\'confirm-dispose\', { id: ' . $row->id . ', nap_authority_no: \'' . e($row->nap_authority_no) . '\' })"
                             class="inline-flex items-center px-3 py-1 bg-red-500 text-white text-xs font-semibold rounded transition ' . $disposeClass . '"
                             ' . $disposeAttr . '
                         >

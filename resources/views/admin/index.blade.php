@@ -146,11 +146,13 @@
                         showDisposeModal: false,
                         inventoryToDispose: null,
                         disposedDate: '',
+                        napAuthorityNo: '',
 
                         init() {
                             window.addEventListener('confirm-dispose', event => {
                                 this.inventoryToDispose = event.detail.id;
                                 this.disposedDate = '';
+                                this.napAuthorityNo = event.nap_authority_no ?? '';
                                 this.showDisposeModal = true;
                             });
                         },
@@ -165,7 +167,8 @@
                                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
                                     },
                                     body: JSON.stringify({
-                                        disposed_date: this.disposedDate
+                                        disposed_date: this.disposedDate,
+                                        nap_authority_no: this.napAuthorityNo
                                     })
                                 })
                                 .then(res => res.json())

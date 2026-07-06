@@ -14,7 +14,6 @@ class AdminUpdateInventoryService
         $inventory->update([
             'rack_no' => (int) $data['rack_no'], 
             'loc_code' => $data['loc_code'],
-            'nap_authority_no' => $data['nap_authority_no'],
         ]);
 
         return true;
