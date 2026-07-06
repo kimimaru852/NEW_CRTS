@@ -30,12 +30,6 @@
                 <input type="number" x-model="inventory.rack_no" placeholder="Ex. 123..." class="block mt-1 w-full dark:bg-gray-700 dark:text-white dark:border-gray-60 mb-4">
             </div>
 
-            <!-- Nap authority no -->
-            <div>
-                <label>NAP Authority No.</label>
-                <input type="text" x-model='inventory.nap_authority_no' placeholder="Ex. AV-2024-246" class="block mt-1 w-full dark:bg-gray-700 dark:text-white dark:border-gray-60 mb-4"/>
-            </div>
-
             <!-- Location Code -->
             <div>
                 <label class="block mb-2">Location Code:</label>

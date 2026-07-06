@@ -97,7 +97,6 @@ class InventoryController extends Controller
         $validated = $request->validate([
             'rack_no' => 'required|integer|min:1',
             'loc_code' => 'required|string|max:50',
-            'nap_authority_no' => 'required|string|max:50',
         ]);
 
         $adminUpdateInventoryService->checkUpdate($id, $validated);
@@ -106,10 +105,10 @@ class InventoryController extends Controller
             ->json(['message' => 'Inventory updated successfully.']);
     }
 
-    public function displayIndexUser()
+    public function displayIndexUser(Request $request)
     {
         if (request()->ajax()) {
-            return $this->userDisplayInventoriesService->display();
+            return $this->userDisplayInventoriesService->display($request);
         }
 
         $inventories = $this->userCountInventoryService->count();

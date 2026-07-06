@@ -17,6 +17,7 @@ class AdminDisposeService
             // Update disposal status and date
             $inventory->disposal_status = 'disposed';
             $inventory->disposed_date = $request->disposed_date;
+            $inventory->nap_authority_no = $request->nap_authority_no;
 
             // Create archived inventory
             $archived = ArchiveInventories::create($inventory->only([

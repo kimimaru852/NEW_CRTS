@@ -17,6 +17,7 @@ class ArchiveInventories extends Model
         'received_date',
         'manager_approval',
         'manager_approval_date',
+        'nap_authority_no',
         'verified_by',
         'verified_date',
         'disposal_status',
