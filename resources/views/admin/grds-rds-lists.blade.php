@@ -29,7 +29,7 @@
                     <!-- description -->
                     <div>
                         <x-input-label for="description" :value="__('description')" class="dark:text-gray-300 capitalize" />
-                        <x-text-input placeholder="Ex. Juan P. Dela Cruz" id="description" class="block mt-1 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600" type="text" name="description" :value="old('description')" required autofocus autocomplete="description" />
+                        <x-text-input placeholder="Ex. Inspection and Receiving Report" id="description" class="block mt-1 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600" type="text" name="description" :value="old('description')" required autofocus autocomplete="description" />
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     </div>
 

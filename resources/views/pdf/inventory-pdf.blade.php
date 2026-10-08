@@ -216,7 +216,7 @@
                     {{ \Carbon\Carbon::parse($inventory->received_date)->format('m/d/Y') }}
                     @endif
                 </p>
-                <p class="foot"><strong>Validated by(supervisor):</strong> {{ $inventory->verified_by}}</p>
+                <p class="foot"><strong>Validated by:</strong> {{ $inventory->verified_by}}</p>
                 <p class="foot"><strong>date: </strong>
                     @if(!empty($inventory->verified_by))
                     {{ \Carbon\Carbon::parse($inventory->verified_date)->format('m/d/Y') }}

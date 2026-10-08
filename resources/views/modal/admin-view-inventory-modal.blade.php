@@ -143,7 +143,7 @@
                                 ? new Date(inventory.received_date).toLocaleDateString('en-US') 
                                 : ' '">
                     </span></h3>
-                <h3><strong>Validated by(supervisor):</strong><span x-text="inventory.verified_by" class="px-2 rounded-full underline"></span></h3>
+                <h3><strong>Validated by:</strong><span x-text="inventory.verified_by" class="px-2 rounded-full underline"></span></h3>
                 <h3><strong>date:</strong>
                     <span
                         class="underline"
