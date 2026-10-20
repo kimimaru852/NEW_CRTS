@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>2
+<head>
     <title>{{ $inventory->prepared_by }} - RTO Inventory PDF</title>
     <style>
         body {
@@ -203,8 +203,8 @@
         <tr>
             <td style="width: 48%; vertical-align: top; border: none; margin-left: 20px;">
                 <p class="foot"><strong>BOX NO.:</strong> {{ $inventory->id }}</p>
-                <p class="foot"><strong>NAP Authority No.:</strong> {{ $inventory->nap_authority_no }}</p>
                 <p class="foot"><strong>LOC CODE:</strong> {{ $inventory->loc_code }}</p>
+                <p class="foot"><strong>NAP Authority No.:</strong> {{ $inventory->nap_authority_no }}</p>
             </td>
             <td style="width: 48%; vertical-align: top; border: none; margin-left: 20px;">
                 <p class="foot"><strong>Rack No.:</strong> {{ $inventory->rack_no }}</p>

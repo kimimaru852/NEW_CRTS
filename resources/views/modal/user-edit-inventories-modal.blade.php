@@ -80,6 +80,14 @@
                                     </option>
                                     @endforeach
                                 </select>
+
+                                <!-- Hidden actual description -->
+                            <input type="hidden"
+                                :name="'items[' + index + '][description]'"
+                                x-model="item.description">
+                                
+                                <input required type="text" :name="'items[' + index + '][description]'" x-model="item.description" class="form-input w-full dark:bg-stone-800 text-stone-800 dark:text-white">
+                        </div>
                             </td>
                             <td><input type="date" x-model="item.doc_date" class="form-input w-full dark:bg-stone-800 text-stone-800 dark:text-white" required></td>
                             <td><input type="number" x-model="item.quantity" class="form-input w-full dark:bg-stone-800 text-stone-800 dark:text-white" required></td>
@@ -89,6 +97,7 @@
                                     <option value="Folder">Folder</option>
                                     <option value="Molar">Molar</option>
                                     <option value="Binder">Binder</option>
+                                    <option value="Bundle">Bundle</option>
                                 </select>
                             </td>
                             <td>
