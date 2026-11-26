@@ -35,11 +35,18 @@ class OfficesController extends Controller
         return $this->adminCreateCostCenterService->create($request);
     } 
 
-    public function fetchOfficeSelection()
+    public function adminRegisterHead()
     {
         $offices = $this->admindisplayCostCenterService->display();
 
         return view('admin.register', compact('offices'));
+    }
+    
+    public function adminRegisterUser()
+    {
+        $offices = $this->admindisplayCostCenterService->display();
+
+        return view('admin.register-user', compact('offices'));
     }
 
     public function displayOffice()

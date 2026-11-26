@@ -126,6 +126,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email|unique:users',
+            'office_id' => 'required|exists:offices,id',
             'password' => ['required', 'confirmed', 'min:8', 'regex:/[A-Z]/', 'regex:/[0-9]/', 'regex:/[@$!%*?&_]/'],
         ]);
 

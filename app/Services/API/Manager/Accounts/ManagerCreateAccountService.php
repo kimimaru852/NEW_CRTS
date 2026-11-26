@@ -20,8 +20,7 @@ class ManagerCreateAccountService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'managerId' => Auth::id(),
-            'office_id' => Auth::user()->office_id,
+            'office_id' => $data['office_id'],
         ]);
 
         $user->assignRole('user');

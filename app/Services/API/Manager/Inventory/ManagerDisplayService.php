@@ -14,7 +14,7 @@ class ManagerDisplayService
         if ($request->ajax()) {
             $data = Inventory::with('user', 'items')
                 ->whereHas('user', function ($query) {
-                    $query->where('managerId', Auth::id());
+                    $query->where('office_id', Auth::user()->office_id);
                 });
 
             return DataTables::of($data)
