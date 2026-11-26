@@ -37,8 +37,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/office', [OfficesController::class, 'displayOffice'])
         ->name('admin.office');
 
-    Route::get('/admin/register-manager-form', [OfficesController::class, 'fetchOfficeSelection'])
+    Route::get('/admin/register-manager-form', [OfficesController::class, 'adminRegisterHead'])
         ->name('admin.registerForm');
+
+    Route::get('/admin/register-user-form', [OfficesController::class, 'adminRegisterUser'])
+        ->name('admin.registerUserForm');
 
     Route::get('/admin', [InventoryController::class, 'display'])
         ->name('admin.inventory');
@@ -82,6 +85,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/manager/register', [UserController::class, 'registerManager'])
         ->name('admin.register');
 
+    // Route::post('/user/register', [UserController::class, 'registerUser'])
+    //     ->name('admin.registerUser');
+
+
+    Route::post('/user/register', [UserController::class, 'registerUser'])
+        ->name('admin.registerUser');
+
     Route::post('admin/storeOffice', [OfficesController::class, 'storeOffice'])
         ->name('admin.storeOffice');
 
@@ -113,8 +123,8 @@ Route::middleware(['auth', 'role:manager'])->group(function () {
     Route::get('/manager/dashboard', [InventoryController::class, 'managerDisplay'])
         ->name('manager.index');
 
-    Route::post('/user/register', [UserController::class, 'registerUser'])
-        ->name('user.register');
+    // Route::post('/user/register', [UserController::class, 'registerUser'])
+    //     ->name('user.register');
 });
 
 // User Route

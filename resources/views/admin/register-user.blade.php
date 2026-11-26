@@ -1,15 +1,14 @@
 <x-app-layout>
-
     <div class="link text-gray-700 dark:text-gray-200 flex justify-between mt-2 px-4 my-6 font-bold">
         <div class="flex underline underline-offset-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
-            <a href="{{ route('manager.index') }}">Dashboard</a>
+            <a href="{{ route('admin.registerForm') }}">Add Cost Center Head</a>
         </div>
 
         <div class="flex underline underline-offset-4">
-            <a href="{{ route('manager.reports') }}">Reports</a>
+            <a href="{{ route('admin.office') }}">Manage Cost Center</a>
 
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -18,12 +17,14 @@
     </div>
 
     <!-- Registration Form -->
-    <form method="POST" action="{{ route('user.register') }}" class="dark:bg-stone-800 bg-gray-200 rounded-lg mx-6 mt-2" id="registerForm">
-        <h2 class="py-4 px-6 bg-gradient-to-r from-emerald-500/90 to-green-600/90 backdrop-blur rounded-t-lg text-xl font-bold text-white">Register your user
+    <form method="POST" action="{{ route('admin.registerUser') }}" class="dark:bg-stone-800 mx-6 bg-gray-200 rounded-lg mt-2 " enctype="multipart/form-data" id="registerForm">
+        <h2 class="rounded-t-lg bg-gradient-to-r from-emerald-500/90 to-green-600/90 backdrop-blur px-6 py-5 text-xl font-bold text-white">Register Cost Center User
             <p class="text-sm font-semibold">all fields are required</p>
         </h2>
+
         @csrf
-        <div class="p-10">
+        <div class="lg:p-8 md:p-10 mx-10">
+
             <!-- Name -->
             <div>
                 <x-input-label for="name" :value="__('Name')" class="dark:text-gray-300" />
@@ -52,6 +53,22 @@
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
             </div>
 
+            <div class="mt-4">
+                <x-input-label for="office_id" :value="__('Cost Center')" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Select Status</x-input-label>
+                <select name="office_id" id="office_id" class="block w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-gray-500 focus:border-gray-500 text-gray-700 dark:text-gray-300 dark:bg-stone-900 ">
+                    <option value="" disabled selected hidden>-- Select Cost Center --</option>
+
+                    @foreach($offices as $office)
+                    <option value="{{ $office->id }}">{{ $office->department }}</option>
+                    @endforeach
+                </select>
+
+
+                @error('office_id')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Already Registered -->
             <div class="flex flex-col sm:flex-row items-center justify-between mt-4">
 
@@ -62,27 +79,12 @@
                 </div>
                 <!-- Submit Button -->
                 <x-green-button id="submitButton">
-                    {{ __('create new user') }}
+                    {{ __('create new cost center user') }}
                 </x-green-button>
             </div>
         </div>
     </form>
 
-    @if(session('error'))
-    <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 z-50 bg-red-500 text-white p-4 rounded shadow-lg"
-        x-init="setTimeout(() => show = false, 3000)">
-        <p>{{ session('error') }}</p>
-    </div>
-    @endif
-
-    @if(session('success'))
-    <div x-data="{ show: true }" x-show="show"
-        class="fixed top-5 right-5 z-50 bg-green-500 text-white p-4 rounded shadow-lg"
-        x-init="setTimeout(() => show = false, 3000)">
-        <p>{{ session('success') }}</p>
-    </div>
-    @endif
 </x-app-layout>
 
 <script src="{{ asset('js/disabledbutton.js') }}"></script>
