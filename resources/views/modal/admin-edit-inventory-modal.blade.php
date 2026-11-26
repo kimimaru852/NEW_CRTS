@@ -4,7 +4,7 @@
     x-show="show"
     class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
     <div class="text-gray-900 dark:text-gray-100 bg-white dark:bg-stone-800 rounded-lg w-full max-w-md px-4 py-8">
-        <h2 class="text-lg font-bold mb-4 uppercase">Rack No., NAP Authority No. & Loc Code Form</h2>
+        <h2 class="text-lg font-bold mb-4 uppercase">Rack No. & Location Code</h2>
 
         <form
             x-on:submit.prevent="

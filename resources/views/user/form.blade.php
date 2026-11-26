@@ -48,11 +48,13 @@
                                 </option>
                                 @endforeach
                             </select>
-
+                            
                             <!-- Hidden actual description -->
                             <input type="hidden"
                                 :name="'items[' + index + '][description]'"
                                 x-model="item.description">
+                                
+                                <input required type="text" :name="'items[' + index + '][description]'" x-model="item.description" class="form-input w-full dark:bg-stone-800 text-stone-800 dark:text-white">
                         </div>
 
                         <!-- Doc Date -->
@@ -72,6 +74,7 @@
                                 <option value="Folder">Folder</option>
                                 <option value="Molar">Molar</option>
                                 <option value="Binder">Binder</option>
+                                <option value="Bundle">Bundle</option>
                             </select>
                         </div>
 

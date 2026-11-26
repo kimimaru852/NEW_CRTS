@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>2
+<head>
     <title>{{ $inventory->prepared_by }} - RTO Inventory PDF</title>
     <style>
         body {
@@ -203,8 +203,8 @@
         <tr>
             <td style="width: 48%; vertical-align: top; border: none; margin-left: 20px;">
                 <p class="foot"><strong>BOX NO.:</strong> {{ $inventory->id }}</p>
-                <p class="foot"><strong>NAP Authority No.:</strong> {{ $inventory->nap_authority_no }}</p>
                 <p class="foot"><strong>LOC CODE:</strong> {{ $inventory->loc_code }}</p>
+                <p class="foot"><strong>NAP Authority No.:</strong> {{ $inventory->nap_authority_no }}</p>
             </td>
             <td style="width: 48%; vertical-align: top; border: none; margin-left: 20px;">
                 <p class="foot"><strong>Rack No.:</strong> {{ $inventory->rack_no }}</p>
@@ -216,7 +216,7 @@
                     {{ \Carbon\Carbon::parse($inventory->received_date)->format('m/d/Y') }}
                     @endif
                 </p>
-                <p class="foot"><strong>Validated by(supervisor):</strong> {{ $inventory->verified_by}}</p>
+                <p class="foot"><strong>Validated by:</strong> {{ $inventory->verified_by}}</p>
                 <p class="foot"><strong>date: </strong>
                     @if(!empty($inventory->verified_by))
                     {{ \Carbon\Carbon::parse($inventory->verified_date)->format('m/d/Y') }}

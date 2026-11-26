@@ -71,7 +71,7 @@
 
             <div class="text-center w-full">
                 <h3 class="text-xl font-bold mb-4">Welcome to TransCo Computerized Records Turn-Over and Inventory System</h3>
-                <p class="text-sm">Efficiently track and manage your inventory with ease. Secure, simple, and fast.</p>
+                <p class="text-sm">Efficiently track and manage your records inventory with ease. Secure, simple, and fast.</p>
             </div>
 
             <div class="mt-10">
